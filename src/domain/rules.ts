@@ -1,3 +1,4 @@
+import { addDays } from "./dates";
 import { periodContains, periodFor } from "./periods";
 import type { Dish, ISODate, Rule, RuleSnapshot } from "./types";
 
@@ -28,14 +29,8 @@ export function ruleWindowStart(dish: Dish, snapshots: RuleSnapshot[], date: ISO
     if (s.dishId !== dish.id) continue;
     const p = periodFor(s.cadence, s.periodStart);
     if (!p || p.end >= date) continue;
-    const dayAfter = nextDay(p.end);
+    const dayAfter = addDays(p.end, 1);
     if (dayAfter > start) start = dayAfter;
   }
   return start;
-}
-
-function nextDay(d: ISODate): ISODate {
-  // Local import to avoid a cycle through periods -> dates in some bundlers.
-  const { addDays } = require("./dates") as typeof import("./dates");
-  return addDays(d, 1);
 }
