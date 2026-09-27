@@ -55,11 +55,19 @@ Browser storage can be cleared by the user or the system. This is the only way d
 - [ ] Round-trip test: export, clear, restore, same scores
 - [ ] Commit
 
-## 6. Hosting
+## 6. Hosting on GitHub Pages
 
-- [ ] Choose a static host with HTTPS (Cloudflare Pages, Netlify, or GitHub Pages all work; no special headers needed)
-- [ ] Deploy `dist/` and confirm the manifest and service worker are served
-- [ ] README: hosting and deploy steps
+The site lives at `https://<user>.github.io/orexis/`, so everything must work under the `/orexis/` sub-path.
+
+- [ ] Create the GitHub repository and push `main` (public, or private on a paid plan; Pages needs one or the other)
+- [ ] `app.json`: set `experiments.baseUrl` to `/orexis` so the router and asset URLs use the sub-path
+- [ ] Manifest: `start_url` and `scope` set to `/orexis/`; icon paths relative to it
+- [ ] Service worker registered at `/orexis/sw.js` with precache paths under the sub-path
+- [ ] Copy `index.html` to `404.html` in `dist/` so a refresh on `/orexis/menu` still loads the app
+- [ ] `.github/workflows/pages.yml`: on push to `main`, install, run `npm run verify`, build web, upload `dist/`, deploy with the official Pages actions
+- [ ] Repository settings: Pages source set to GitHub Actions
+- [ ] First deploy: confirm the manifest and service worker are served and the install prompt appears
+- [ ] README: the URL and how deploys happen
 - [ ] Commit
 
 ## 7. Verification on the phone
