@@ -28,11 +28,11 @@ Each phase ends with a commit. Phases 2 and 3 have no UI and are fully unit test
 
 ## 3. Storage
 
-- [ ] `src/db/schema.ts`: the six tables from SPEC.md, versioned migration runner
-- [ ] `src/db/repo.ts`: list categories, list dishes, insert and update dish, delete dish with cascade, auto-delete empty category, rename and reorder category, snapshot rule history on cadence or repeats change
-- [ ] `src/db/repo.ts`: get order for day, place order, list order items, insert completion, list completions since date
-- [ ] Integration test against an in-memory SQLite with the full order, complete, delete flow
-- [ ] Commit
+- [x] `src/db/schema.ts`: the six tables from SPEC.md, versioned migration runner
+- [x] `src/db/repo.ts`: list categories, list dishes, insert and update dish, delete dish with cascade, auto-delete empty category, rename and reorder category, snapshot rule history on cadence or repeats change
+- [x] `src/db/repo.ts`: get order for day, place order, list order items, insert completion, list completions since date
+- [x] Integration test against an in-memory SQLite with the full order, complete, delete flow
+- [x] Commit
 
 ## 4. Components
 

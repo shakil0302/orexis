@@ -51,13 +51,13 @@ Weeks start Monday. Weekly and bi-weekly periods are counted from 1970-01-05, th
 - Ordering and not doing costs more than not ordering, on purpose. Honest skipping is cheaper than false commitment.
 - Recomputed from raw rows on app open and after each completion. No cache.
 
-**Presentation of deficiency.** Never shown as a warning. Dishes sort by score within their category. The top-scoring dishes carry a "Suggested" tag on the order screen. The raw number appears only on the menu editor, in muted grey.
+**Presentation of deficiency.** Never shown as a warning. Dishes sort by score within their category. The top-scoring dish in each category carries a "Suggested" tag on the order screen when its score is above zero. The raw number appears only on the menu editor, in muted grey.
 
 **Categories.** Created inline from the dish form via a "New" chip. Deleted automatically when their last dish is removed or moved. Can be renamed and reordered. No caps.
 
 **Editing a dish.** Name, category, and duration apply immediately, including on today's list. Cadence and repeats apply from the next period; the current period keeps the old values via a snapshot so its tick stays honest.
 
-**Deleting a dish.** Confirmed once via a bottom sheet. Removes the dish from the menu and today's list and deletes its order items and completions. Nothing references them afterwards.
+**Deleting a dish.** Confirmed once via a bottom sheet. Physically deletes the dish row together with its order items, completions, and rule snapshots. Today's order row is kept so the day stays locked; older order rows left with no items are removed.
 
 **Purging.** None. Data volume is a few megabytes per decade. Purging would require a frozen baseline score per dish, a second source of truth. If ever needed, a per-dish settled-through date can be added later.
 
@@ -129,8 +129,7 @@ CREATE TABLE dishes (
   duration_min  INTEGER NOT NULL,
   cadence       TEXT NOT NULL,
   repeats       INTEGER NOT NULL DEFAULT 1,
-  created_on    TEXT NOT NULL,
-  deleted_on    TEXT
+  created_on    TEXT NOT NULL
 );
 
 CREATE TABLE dish_rule_history (
