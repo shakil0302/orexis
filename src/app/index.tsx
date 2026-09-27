@@ -1,9 +1,9 @@
-import { Text, View } from "react-native";
+import { Redirect } from "expo-router";
+import { getRepo } from "../db/open";
+import { localToday } from "../domain/dates";
 
+/** Entry point: today's list once an order exists, otherwise the order screen. */
 export default function Index() {
-  return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center", backgroundColor: "#FFFFFF" }}>
-      <Text style={{ color: "#373530" }}>Orexis</Text>
-    </View>
-  );
+  const hasOrder = getRepo().getOrder(localToday()) !== null;
+  return <Redirect href={hasOrder ? "/today" : "/order"} />;
 }

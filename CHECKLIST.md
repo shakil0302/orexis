@@ -49,13 +49,13 @@ Each phase ends with a commit. Phases 2 and 3 have no UI and are fully unit test
 
 ## 5. Screens
 
-- [ ] Router layout: `/` decides between order and today based on whether an order exists for today
-- [ ] Order today: grouped list, checkboxes, Suggested tags, progress, running total, Place order, empty state
-- [ ] Today: locked list, tick to complete, summary tiles, All done state
-- [ ] Menu: categories with dishes and deficiency number, dots menu with Rename, Move up, Move down, Add dish row
-- [ ] Dish form, add mode: name, category chips with New, duration, cadence chips, repeat stepper with cap, preview sentence, validation
-- [ ] Dish form, edit mode: prefilled, Save, Delete dish with bottom sheet confirmation
-- [ ] Reload data on screen focus
+- [x] Router layout: `/` decides between order and today based on whether an order exists for today
+- [x] Order today: grouped list, checkboxes, Suggested tags, progress, running total, Place order, empty state
+- [x] Today: locked list, tick to complete, summary tiles, All done state
+- [x] Menu: categories with dishes and deficiency number, dots menu with Rename, Move up, Move down, Add dish row
+- [x] Dish form, add mode: name, category chips with New, duration, cadence chips, repeat stepper with cap, preview sentence, validation
+- [x] Dish form, edit mode: prefilled, Save, Delete dish with bottom sheet confirmation
+- [x] Reload data on screen focus
 - [ ] Commit
 
 ## 6. Notifications and day rollover
