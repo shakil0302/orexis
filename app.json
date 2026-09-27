@@ -1,0 +1,41 @@
+{
+  "expo": {
+    "name": "Orexis",
+    "slug": "orexis",
+    "version": "0.1.0",
+    "scheme": "orexis",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "platforms": [
+      "android"
+    ],
+    "android": {
+      "package": "com.shakil.orexis",
+      "adaptiveIcon": {
+        "backgroundColor": "#FFFFFF",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "plugins": [
+      "expo-router",
+      "expo-status-bar",
+      "expo-sqlite",
+      "expo-font",
+      "expo-splash-screen",
+      [
+        "expo-notifications",
+        {
+          "color": "#487CA5",
+          "defaultChannel": "daily"
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}
