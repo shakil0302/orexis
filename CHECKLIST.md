@@ -56,15 +56,15 @@ Each phase ends with a commit. Phases 2 and 3 have no UI and are fully unit test
 - [x] Dish form, add mode: name, category chips with New, duration, cadence chips, repeat stepper with cap, preview sentence, validation
 - [x] Dish form, edit mode: prefilled, Save, Delete dish with bottom sheet confirmation
 - [x] Reload data on screen focus
-- [ ] Commit
+- [x] Commit
 
 ## 6. Notifications and day rollover
 
-- [ ] Request notification permission on first launch, Android 13 and later
-- [ ] Notification channel, daily trigger at 07:00 local, re-register on every launch
-- [ ] Tap opens the app at `/`, which routes to order or today
-- [ ] Detect date change while the app is open or resumed and refresh the current screen
-- [ ] Commit
+- [x] Request notification permission on first launch, Android 13 and later
+- [x] Notification channel, daily trigger at 07:00 local, re-register on every launch
+- [x] Tap opens the app at `/`, which routes to order or today
+- [x] Detect date change while the app is open or resumed and refresh the current screen
+- [x] Commit
 
 ## 7. Developer aids
 
