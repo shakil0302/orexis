@@ -1,14 +1,16 @@
 // Serves dist/ the way a static host would, for checking the built web app locally.
 // Honours experiments.baseUrl from app.json so sub-path hosting can be tested too.
-// Run with: node scripts/serve-dist.mjs [port]
+// Run with: node scripts/serve-dist.mjs [port] [--base /sub-path]
 import { createServer } from "node:http";
 import { existsSync, readFileSync, statSync } from "node:fs";
 import { extname, join, normalize } from "node:path";
 
 const DIST = "dist";
-const port = Number(process.argv[2] ?? 8082);
-const appConfig = JSON.parse(readFileSync("app.json", "utf8"));
-const base = (appConfig.expo.experiments?.baseUrl ?? "").replace(/\/$/, "");
+const args = process.argv.slice(2);
+const baseFlag = args.indexOf("--base");
+const port = Number(args.find((a) => /^\d+$/.test(a)) ?? 8082);
+// Same value the build used, so a sub-path build can be checked locally.
+const base = (baseFlag >= 0 ? args[baseFlag + 1] : (process.env.WEB_BASE_URL ?? "")).replace(/\/$/, "");
 
 const TYPES = {
   ".html": "text/html; charset=utf-8",

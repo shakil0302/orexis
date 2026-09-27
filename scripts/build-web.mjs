@@ -12,9 +12,9 @@ const require = createRequire(import.meta.url);
 const { generateSW } = require("workbox-build");
 
 const DIST = "dist";
-const appConfig = JSON.parse(readFileSync("app.json", "utf8"));
 // Sub-path the site is hosted under, e.g. "/orexis" on GitHub Pages. Empty at the root.
-const base = (appConfig.expo.experiments?.baseUrl ?? "").replace(/\/$/, "");
+// app.config.js passes the same value to Expo as experiments.baseUrl.
+const base = (process.env.WEB_BASE_URL ?? "").replace(/\/$/, "");
 
 execSync(`npx expo export --platform web --output-dir ${DIST}`, { stdio: "inherit" });
 
