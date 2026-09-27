@@ -36,7 +36,7 @@ Weeks start Monday. Weekly and bi-weekly periods are counted from 1970-01-05, th
 
 **New dishes.** Available immediately. The first period is whatever remains of the current one, so a monthly dish created on the 28th has a short first window. Accepted; it self-corrects after one period.
 
-**Ordering.** One order per day. Opened by the 07:00 notification or by launching the app. Submitting locks it. Nothing can be added or removed afterwards. No ad hoc items. No cutoff time is shown; the order screen stays open until an order is placed or the day ends. A day with no order is an unplanned day and counts as "not ordered" for every available dish.
+**Ordering.** One order per day. Opened by launching the app. Submitting locks it. Nothing can be added or removed afterwards. No ad hoc items. No cutoff time is shown; the order screen stays open until an order is placed or the day ends. A day with no order is an unplanned day and counts as "not ordered" for every available dish.
 
 **Completion.** Only ordered dishes can be ticked. At most one completion per dish per day. Unticked items simply remain unticked and vanish with the day.
 
@@ -71,7 +71,7 @@ Weeks start Monday. Weekly and bi-weekly periods are counted from 1970-01-05, th
 
 **Dish form.** Shared by add and edit. Name, category chips plus New, duration, cadence chips, repeat stepper with cap shown, plain-language preview sentence. "Add to menu" or "Save". Edit variant has a red "Delete dish" link at the very bottom.
 
-**Notification.** Repeating local notification at 07:00, re-registered on every app launch. Deep links to the order screen, or to today if an order already exists.
+**Notification.** None. You open the app. A morning prompt was in the original design but was dropped when the app moved to the web; a scheduled web push sender could bring it back later.
 
 **Theme.** Light only. Notion's published light palette, unchanged:
 
@@ -96,7 +96,6 @@ Blue is the only accent: primary button, checked state, Chef's pick tag. Red is 
 
 | Moment | Line |
 |---|---|
-| Notification | Kitchen's open. What are you having today? |
 | Order screen title | Order today |
 | Submit | Place order |
 | After submit | Order's in (brief toast) |
@@ -109,7 +108,7 @@ Restaurant voice in the words, neutral palette on the screen. No exclamation mar
 
 ## 3. Technical
 
-**Stack.** Expo with TypeScript, expo-router, expo-sqlite, expo-notifications, expo-font. Android only. No server, no accounts, no sync. No state library; data reloads from SQLite on screen focus.
+**Stack.** Expo with TypeScript, expo-router, expo-font, react-native-web. Web first, installed to the phone's home screen from Chrome and hosted on GitHub Pages; Android native stays buildable. No server, no accounts, no sync. No state library; data reloads from storage on screen focus.
 
 **Architecture.** Three layers with one-way dependency. Screens are thin React Native components. Domain is pure TypeScript with no React or SQLite imports: periods, availability, deficiency, ordering. Storage is a small repository over SQLite.
 
@@ -161,7 +160,7 @@ CREATE TABLE completions (
 
 Dates are YYYY-MM-DD local. Timestamps are ISO. Everything the UI shows is derived from these tables.
 
-**Constants file.** X, C, decay, week start, notification time.
+**Constants file.** X, C, decay, week start.
 
 ## Rejected along the way
 

@@ -6,13 +6,13 @@ Each phase ends with `npm run verify` green and a commit. Phases 1 and 2 have no
 
 ## 1. Drop notifications and record the decisions
 
-- [ ] Remove `src/notifications.ts`, the launch hook in `src/app/_layout.tsx`, and the "Notify in 5 s" development button
-- [ ] Uninstall expo-notifications and remove its plugin entry from `app.json`
-- [ ] Remove the notification constants from `src/constants.ts`
-- [ ] SPEC.md: notification section becomes "none; you open the app", platform becomes web first, storage becomes a JSON document
-- [ ] CHECKLIST.md: mark phases 8 and 9 superseded by this file
-- [ ] README: remove the notification and EAS sections for now
-- [ ] Commit
+- [x] Remove `src/notifications.ts`, the launch hook in `src/app/_layout.tsx`, and the "Notify in 5 s" development button
+- [x] Uninstall expo-notifications and remove its plugin entry from `app.json`
+- [x] Remove the notification constants from `src/constants.ts`
+- [x] SPEC.md: notification section becomes "none; you open the app", platform becomes web first, storage becomes a JSON document
+- [x] CHECKLIST.md: mark phases 8 and 9 superseded by this file
+- [x] README: remove the notification and EAS sections for now
+- [x] Commit
 
 ## 2. Replace SQLite with a JSON document store
 

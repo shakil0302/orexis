@@ -25,17 +25,16 @@
       "expo-status-bar",
       "expo-sqlite",
       "expo-font",
-      "expo-splash-screen",
-      [
-        "expo-notifications",
-        {
-          "color": "#487CA5",
-          "defaultChannel": "daily"
-        }
-      ]
+      "expo-splash-screen"
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "4660b0d3-5dfc-4d8d-a01b-609d626623f5"
+      }
     }
   }
 }

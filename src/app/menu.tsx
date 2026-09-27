@@ -1,11 +1,10 @@
 import { Feather } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { useState } from "react";
-import { Pressable, StyleSheet, ToastAndroid, View } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
 import { BottomSheet, Button, Empty, Field, IconButton, Input, Muted, Row, Screen, SectionHeader, T } from "../components";
 import { getRepo } from "../db/open";
 import { seedSampleMenu } from "../dev/seed";
-import { sendTestNotification } from "../notifications";
 import { addDays, getTodayOverride, localToday, setTodayOverride } from "../domain/dates";
 import { formatMinutes } from "../domain/ordering";
 import { ruleSummary } from "../domain/format";
@@ -38,12 +37,6 @@ export default function MenuScreen() {
     setRenaming(menuFor);
     setNewName(menuFor.name);
     setMenuFor(null);
-  };
-
-  const testNotification = () => {
-    sendTestNotification()
-      .then((ok) => ToastAndroid.show(ok ? "Notification in 5 s. Background the app." : "Not available in Expo Go", ToastAndroid.SHORT))
-      .catch((e) => ToastAndroid.show(`Failed: ${String(e)}`, ToastAndroid.LONG));
   };
 
   const saveRename = () => {
@@ -97,7 +90,6 @@ export default function MenuScreen() {
             <Button label="Seed sample menu" variant="secondary" onPress={() => { seedSampleMenu(getRepo(), data.today); reload(); }} />
             <Button label="Day +1" variant="secondary" onPress={() => { setTodayOverride(addDays(data.today, 1)); reload(); }} />
             <Button label="Real date" variant="secondary" onPress={() => { setTodayOverride(null); reload(); }} />
-            <Button label="Notify in 5 s" variant="secondary" onPress={testNotification} />
           </View>
           <Muted style={{ marginTop: space.sm }}>{`Real date: ${localToday(new Date()) === data.today ? "same" : "differs"}. Overrides clear on restart.`}</Muted>
         </View>

@@ -72,13 +72,13 @@ Each phase ends with a commit. Phases 2 and 3 have no UI and are fully unit test
 - [x] Dev-only date override so period boundaries and deficiency can be exercised without waiting
 - [x] Commit
 
-## 8. Build and install
+## 8. Build and install (superseded by WEB-MIGRATION.md; the phone cannot sideload APKs)
 
 - [x] EAS preview profile in eas.json producing an APK (local build not possible: no Android SDK or JDK 17 on this machine)
 - [ ] Install on the phone, confirm notification arrives at 07:00 the next morning
 - [ ] Commit
 
-## 9. Manual verification
+## 9. Manual verification (superseded by WEB-MIGRATION.md phase 7)
 
 - [ ] Add dishes across several cadences, confirm caps on the stepper
 - [ ] Place an order, confirm it locks and today's list matches
