@@ -4,6 +4,8 @@ import { useState } from "react";
 import { Pressable, StyleSheet, View } from "react-native";
 import { BottomSheet, Button, Empty, Field, IconButton, Input, Muted, Row, Screen, SectionHeader, T } from "../components";
 import { getRepo } from "../db/open";
+import { seedSampleMenu } from "../dev/seed";
+import { addDays, getTodayOverride, localToday, setTodayOverride } from "../domain/dates";
 import { formatMinutes } from "../domain/ordering";
 import { ruleSummary } from "../domain/format";
 import type { Category } from "../domain/types";
@@ -85,6 +87,18 @@ export default function MenuScreen() {
         <Button label="Add dish in a new category" variant="secondary" onPress={() => router.push("/dish/new")} style={{ marginTop: space.lg }} />
       ) : null}
 
+      {__DEV__ ? (
+        <View style={styles.dev}>
+          <SectionHeader title={`Development · today is ${data.today}${getTodayOverride() ? " (overridden)" : ""}`} />
+          <View style={styles.devRow}>
+            <Button label="Seed sample menu" variant="secondary" onPress={() => { seedSampleMenu(getRepo(), data.today); reload(); }} />
+            <Button label="Day +1" variant="secondary" onPress={() => { setTodayOverride(addDays(data.today, 1)); reload(); }} />
+            <Button label="Real date" variant="secondary" onPress={() => { setTodayOverride(null); reload(); }} />
+          </View>
+          <Muted style={{ marginTop: space.sm }}>{`Real date: ${localToday(new Date()) === data.today ? "same" : "differs"}. Overrides clear on restart.`}</Muted>
+        </View>
+      ) : null}
+
       <BottomSheet visible={menuFor !== null} onClose={() => setMenuFor(null)} title={menuFor?.name}>
         <SheetAction label="Rename" onPress={startRename} />
         <SheetAction label="Move up" onPress={() => move("up")} />
@@ -111,4 +125,6 @@ function SheetAction({ label, onPress }: { label: string; onPress: () => void })
 
 const styles = StyleSheet.create({
   action: { paddingVertical: 14, paddingHorizontal: 4, borderRadius: 6 },
+  dev: { marginTop: space.xl, paddingTop: space.md, borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: colors.divider },
+  devRow: { flexDirection: "row", flexWrap: "wrap", gap: space.sm },
 });

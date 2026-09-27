@@ -58,7 +58,19 @@ export function maxDate(a: ISODate, b: ISODate): ISODate {
   return a > b ? a : b;
 }
 
-/** Today's local calendar date from a JS Date (defaults to now). */
+let todayOverride: ISODate | null = null;
+
+/** Development only: pretend today is another date. Pass null to clear. */
+export function setTodayOverride(date: ISODate | null): void {
+  todayOverride = date;
+}
+
+export function getTodayOverride(): ISODate | null {
+  return todayOverride;
+}
+
+/** Today's local calendar date from a JS Date (defaults to now), unless overridden. */
 export function localToday(now: Date = new Date()): ISODate {
+  if (todayOverride) return todayOverride;
   return fromYMD(now.getFullYear(), now.getMonth() + 1, now.getDate());
 }
