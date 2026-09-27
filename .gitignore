@@ -40,8 +40,6 @@ yarn-error.*
 /ios
 /android
 
-# project-local toolchain
-.tools/
 
 # bundle check output
 .expo-export-check/
