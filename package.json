@@ -9,8 +9,9 @@
     "test": "jest",
     "typecheck": "tsc --noEmit",
     "lint": "expo lint",
-    "bundlecheck": "expo export --platform android --output-dir .expo-export-check",
-    "verify": "npm run lint && npm run typecheck && npm test && npm run bundlecheck"
+    "bundlecheck": "expo export --platform android --platform web --output-dir .expo-export-check",
+    "verify": "npm run lint && npm run typecheck && npm test && npm run bundlecheck",
+    "web": "expo start --web"
   },
   "dependencies": {
     "@expo-google-fonts/inter": "^0.4.2",
@@ -25,9 +26,11 @@
     "expo-status-bar": "~57.0.1",
     "expo-system-ui": "~57.0.4",
     "react": "19.2.3",
+    "react-dom": "19.2.3",
     "react-native": "0.86.3",
     "react-native-safe-area-context": "~5.7.0",
-    "react-native-screens": "~4.26.0"
+    "react-native-screens": "~4.26.0",
+    "react-native-web": "^0.21.2"
   },
   "devDependencies": {
     "@react-native/jest-preset": "^0.86.3",

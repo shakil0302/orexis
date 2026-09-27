@@ -1,32 +1,33 @@
 # Orexis
 
-Personal Android app. Each morning you order the day's activities from a menu of habits you maintain. The order is final, and dishes you keep putting off drift to the top of the menu as their deficiency grows.
+Personal habit app for the phone, installed from the browser. Each morning you order the day's activities from a menu of habits you maintain. The order is final, and dishes you keep putting off drift to the top of the menu as their deficiency grows.
 
 [SPEC.md](SPEC.md) records every design decision. [CHECKLIST.md](CHECKLIST.md) tracks build progress.
 
 ## Requirements
 
 - Node 22 or newer and npm.
-- The Expo Go app on the phone for development.
+- A browser. The Expo Go app on the phone is optional for the Android build.
 
 ## Getting started
 
 ```bash
 npm install
-npm start
+npm run web
 ```
 
-Scan the QR code with Expo Go. The app opens on the order screen; the menu is empty until you add a dish or seed the sample menu from the development panel.
+The app opens in the browser on the order screen; the menu is empty until you add a dish or seed the sample menu from the development panel. `npm start` serves it to Expo Go instead.
 
 ## Commands
 
 | Command | What it does |
 |---|---|
-| `npm start` | Metro dev server for Expo Go |
+| `npm run web` | Dev server for the browser |
+| `npm start` | Dev server for Expo Go |
 | `npm test` | Jest: domain, repository, and screen tests |
 | `npm run lint` | ESLint via `expo lint` |
 | `npm run typecheck` | `tsc --noEmit` |
-| `npm run bundlecheck` | Bundles the Android app once to catch import errors |
+| `npm run bundlecheck` | Bundles the Android and web apps once to catch import errors |
 | `npm run verify` | All of the above, in order. Run before committing |
 
 ## Development panel

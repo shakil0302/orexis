@@ -1,7 +1,7 @@
 import { Redirect, router } from "expo-router";
 import { useMemo, useState } from "react";
-import { Platform, StyleSheet, ToastAndroid, View } from "react-native";
-import { Button, Checkbox, Empty, IconButton, Muted, Row, Screen, SectionHeader, T, Tag } from "../components";
+import { StyleSheet, View } from "react-native";
+import { Button, Checkbox, Empty, IconButton, Muted, Row, Screen, SectionHeader, showToast, T, Tag } from "../components";
 import { getRepo } from "../db/open";
 import { formatLongDate } from "../domain/format";
 import { formatMinutes } from "../domain/ordering";
@@ -30,7 +30,7 @@ export default function OrderScreen() {
 
   const place = () => {
     getRepo().placeOrder(data.today, chosen.map((s) => s.dish.id), new Date().toISOString());
-    if (Platform.OS === "android") ToastAndroid.show("Order's in", ToastAndroid.SHORT);
+    showToast("Order's in");
     router.replace("/today");
   };
 

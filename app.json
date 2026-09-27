@@ -8,7 +8,8 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "platforms": [
-      "android"
+      "android",
+      "web"
     ],
     "android": {
       "package": "com.shakil.orexis",
@@ -34,6 +35,15 @@
       "eas": {
         "projectId": "4660b0d3-5dfc-4d8d-a01b-609d626623f5"
       }
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "single",
+      "favicon": "./assets/favicon.png",
+      "name": "Orexis",
+      "shortName": "Orexis",
+      "themeColor": "#FFFFFF",
+      "backgroundColor": "#FFFFFF"
     }
   }
 }

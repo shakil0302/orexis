@@ -10,4 +10,5 @@ export { Screen } from "./Screen";
 export { SectionHeader } from "./SectionHeader";
 export { Stepper } from "./Stepper";
 export { Tag } from "./Tag";
+export { showToast, ToastHost } from "./Toast";
 export { Muted, T } from "./Text";

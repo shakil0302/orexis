@@ -30,13 +30,13 @@ Keeps the repository synchronous, so screens and the domain layer do not change.
 
 ## 3. Enable the web platform
 
-- [ ] `app.json`: add `"web"` to platforms, set `web.bundler` to metro and `web.output` to single
-- [ ] `npx expo install react-native-web react-dom`
-- [ ] `npm run web` starts and the four screens render in a desktop browser
-- [ ] Replace the Android-only toast with a small cross-platform `Toast` component and use it for "Order's in"
-- [ ] Check on web: Inter loads, the bottom sheet modal opens and closes, hairline dividers show, numeric keyboard on the duration field, safe-area padding is harmless
-- [ ] Date rollover: confirm the foreground check fires on tab visibility change
-- [ ] Commit
+- [x] `app.json`: add `"web"` to platforms, set `web.bundler` to metro and `web.output` to single
+- [x] `npx expo install react-native-web react-dom`
+- [x] `npm run web` starts and the four screens render in a desktop browser
+- [x] Replace the Android-only toast with a small cross-platform `Toast` component and use it for "Order's in"
+- [x] Check on web: Inter loads, the bottom sheet modal opens and closes, hairline dividers show, numeric keyboard on the duration field, safe-area padding is harmless
+- [x] Date rollover: confirm the foreground check fires on tab visibility change
+- [x] Commit
 
 ## 4. Installable shell
 
