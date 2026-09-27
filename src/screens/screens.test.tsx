@@ -1,10 +1,10 @@
 import { fireEvent, render, screen } from "@testing-library/react-native";
 import { resetRepo, routerMock, setSearchParams } from "../test/mocks";
 import * as dates from "../domain/dates";
-import MenuScreen from "./menu";
-import OrderScreen from "./order";
-import TodayScreen from "./today";
-import { DishForm } from "../screens/DishForm";
+import MenuScreen from "../app/menu";
+import OrderScreen from "../app/order";
+import TodayScreen from "../app/today";
+import { DishForm } from "./DishForm";
 
 const TODAY = "2026-09-23"; // Wednesday
 let repo: ReturnType<typeof resetRepo>;

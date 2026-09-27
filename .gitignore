@@ -42,3 +42,6 @@ yarn-error.*
 
 # project-local toolchain
 .tools/
+
+# bundle check output
+.expo-export-check/

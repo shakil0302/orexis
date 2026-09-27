@@ -8,7 +8,9 @@
     "android": "expo start --android",
     "test": "jest",
     "typecheck": "tsc --noEmit",
-    "lint": "expo lint"
+    "lint": "expo lint",
+    "bundlecheck": "expo export --platform android --output-dir .expo-export-check",
+    "verify": "npm run typecheck && npm test && npm run bundlecheck"
   },
   "dependencies": {
     "@expo-google-fonts/inter": "^0.4.2",
