@@ -1,15 +1,13 @@
-import * as Notifications from "expo-notifications";
+import Constants, { ExecutionEnvironment } from "expo-constants";
 import { Platform } from "react-native";
 import { NOTIFICATION_CHANNEL, NOTIFICATION_HOUR, NOTIFICATION_MINUTE } from "./constants";
 
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowBanner: true,
-    shouldShowList: true,
-    shouldPlaySound: false,
-    shouldSetBadge: false,
-  }),
-});
+/**
+ * Expo Go dropped notification support on Android in SDK 53, and merely
+ * importing expo-notifications there throws. The module is therefore loaded
+ * lazily and only outside Expo Go; the real app is a development or EAS build.
+ */
+export const notificationsAvailable = Constants.executionEnvironment !== ExecutionEnvironment.StoreClient;
 
 /**
  * Asks for permission if needed and (re)schedules the single daily
@@ -18,6 +16,20 @@ Notifications.setNotificationHandler({
  * between the order and today screens.
  */
 export async function ensureDailyNotification(): Promise<boolean> {
+  if (!notificationsAvailable) return false;
+
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const Notifications: typeof import("expo-notifications") = require("expo-notifications");
+
+  Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldShowBanner: true,
+      shouldShowList: true,
+      shouldPlaySound: false,
+      shouldSetBadge: false,
+    }),
+  });
+
   const current = await Notifications.getPermissionsAsync();
   let granted = current.granted;
   if (!granted && current.canAskAgain) {

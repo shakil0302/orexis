@@ -10,7 +10,7 @@ Personal Android app. Each morning you order the day's activities from a menu of
 export PATH="$PWD/.tools/node:$PATH"
 ```
 
-- The Expo Go app on the phone for development, or an APK built with EAS for daily use.
+- The Expo Go app on the phone for development, or an APK built with EAS for daily use. Expo Go cannot show notifications on Android (removed in SDK 53), so the 07:00 prompt only works in the EAS build; everything else runs in Expo Go.
 
 ## Commands
 
