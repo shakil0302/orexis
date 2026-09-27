@@ -35,9 +35,7 @@ The app opens in the browser on the order screen; the menu is empty until you ad
 
 ## Hosting on GitHub Pages
 
-Pushing to `main` runs `.github/workflows/pages.yml`, which installs, runs `npm run verify`, builds the web app under the repository's sub-path, and deploys it to GitHub Pages. The site is then at `https://<user>.github.io/<repository>/`. Open it in Chrome on the phone and choose Add to Home screen.
-
-One-time setup after creating the repository: in Settings, Pages, set the source to GitHub Actions.
+Pushing to `main` runs `.github/workflows/pages.yml`, which installs, runs `npm run verify`, builds the web app under the repository's sub-path, and deploys it to GitHub Pages. The site is at https://shakil0302.github.io/orexis/. Open it in Chrome on the phone and choose Add to Home screen.
 
 To check a sub-path build locally:
 
