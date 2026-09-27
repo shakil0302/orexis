@@ -1,3 +1,5 @@
+import type { TextStyle } from "react-native";
+
 /** Notion's published light palette. Light mode only. */
 export const colors = {
   page: "#FFFFFF",
@@ -20,11 +22,11 @@ export const fonts = {
 export const type = {
   title: { fontFamily: fonts.medium, fontSize: 20, lineHeight: 26 },
   body: { fontFamily: fonts.regular, fontSize: 16, lineHeight: 22 },
-  meta: { fontFamily: fonts.regular, fontSize: 13, lineHeight: 18, fontVariant: ["tabular-nums"] as const },
+  meta: { fontFamily: fonts.regular, fontSize: 13, lineHeight: 18, fontVariant: ["tabular-nums"] },
   section: { fontFamily: fonts.medium, fontSize: 12, lineHeight: 16 },
   button: { fontFamily: fonts.medium, fontSize: 16, lineHeight: 20 },
   tag: { fontFamily: fonts.medium, fontSize: 11, lineHeight: 14 },
-} as const;
+} satisfies Record<string, TextStyle>;
 
 export const space = { xs: 4, sm: 8, md: 16, lg: 24, xl: 32 } as const;
 export const radius = { control: 6, sheet: 12, pill: 999 } as const;

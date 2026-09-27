@@ -36,16 +36,16 @@ Each phase ends with a commit. Phases 2 and 3 have no UI and are fully unit test
 
 ## 4. Components
 
-- [ ] Row with hairline divider
-- [ ] Checkbox with check animation
-- [ ] Chip, selectable
-- [ ] Stepper with min and max
-- [ ] Primary and secondary Button
-- [ ] IconButton, round, top right
-- [ ] Tag
-- [ ] BottomSheet for confirmations and the category menu
-- [ ] TextInput and numeric input styled to the theme
-- [ ] Commit
+- [x] Row with hairline divider
+- [x] Checkbox with check animation
+- [x] Chip, selectable
+- [x] Stepper with min and max
+- [x] Primary and secondary Button
+- [x] IconButton, round, top right
+- [x] Tag
+- [x] BottomSheet for confirmations and the category menu
+- [x] TextInput and numeric input styled to the theme
+- [x] Commit
 
 ## 5. Screens
 
