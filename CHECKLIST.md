@@ -10,21 +10,21 @@ Each phase ends with a commit. Phases 2 and 3 have no UI and are fully unit test
 - [x] Add `.gitattributes` (LF) and confirm `.gitignore` covers node_modules, .expo, android build output
 - [x] Jest with jest-expo configured, one placeholder test passing
 - [x] App bundles for Android (`expo export`); phone boot to be confirmed at phase 8
-- [ ] Commit
+- [x] Commit
 
 ## 2. Constants, theme, domain
 
-- [ ] `src/constants.ts`: X, C, decay, notification hour
-- [ ] `src/theme.ts`: Notion light palette, Inter type scale, spacing, radii
-- [ ] `src/domain/dates.ts`: local date helpers, YYYY-MM-DD parse and format, add days, day-of-week, days since 1970-01-05
-- [ ] `src/domain/periods.ts`: cadence list, period for a cadence and date, next period start, max repeats per cadence
-- [ ] Tests for periods: every cadence, week and fortnight boundaries around New Year, month and quarter edges, leap day
-- [ ] `src/domain/availability.ts`: available dishes for a date given dishes and completions, progress count
-- [ ] Tests for availability: repeats exhausted, done today, weekdays on a Saturday, deleted dish
-- [ ] `src/domain/deficiency.ts`: score per dish from orders, order items, completions, rule history
-- [ ] Tests for deficiency: never ordered, ordered and skipped, mixed shortfall, decay after completion, cadence change mid-history, dish created mid-period
-- [ ] `src/domain/ordering.ts`: can order today, lock, can complete, sort dishes by deficiency within category, suggested set
-- [ ] Commit
+- [x] `src/constants.ts`: X, C, decay, notification hour
+- [x] `src/theme.ts`: Notion light palette, Inter type scale, spacing, radii
+- [x] `src/domain/dates.ts`: local date helpers, YYYY-MM-DD parse and format, add days, day-of-week, days since 1970-01-05
+- [x] `src/domain/periods.ts`: cadence list, period for a cadence and date, next period start, max repeats per cadence
+- [x] Tests for periods: every cadence, week and fortnight boundaries around New Year, month and quarter edges, leap day
+- [x] `src/domain/availability.ts`: available dishes for a date given dishes and completions, progress count
+- [x] Tests for availability: repeats exhausted, done today, weekdays on a Saturday, deleted dish
+- [x] `src/domain/deficiency.ts`: score per dish from orders, order items, completions, rule history
+- [x] Tests for deficiency: never ordered, ordered and skipped, mixed shortfall, decay after completion, cadence change mid-history, dish created mid-period
+- [x] `src/domain/ordering.ts`: can order today, lock, can complete, sort dishes by deficiency within category, suggested set
+- [x] Commit
 
 ## 3. Storage
 
