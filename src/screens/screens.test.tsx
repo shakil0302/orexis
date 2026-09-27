@@ -105,9 +105,9 @@ describe("MenuScreen", () => {
     expect(screen.getByText("3 dishes · 2 categories")).toBeTruthy();
     expect(screen.getByText("3× weekly · 1 h")).toBeTruthy();
     expect(screen.getByText("Daily · 25 min")).toBeTruthy();
-    // Read, daily: 9 closed days (14–22 Sep) never ordered = 4.5. Gym, weekly x3: one closed week = 1.5. Long run: one weekend = 0.5.
+    // Read, daily: 9 past days (14–22 Sep) never ordered = 4.5. Gym, weekly x3: full week 1.5 plus Mon and Tue at 3/7 each = 1.9. Long run: one weekend = 0.5.
     expect(screen.getByText("4.5")).toBeTruthy();
-    expect(screen.getByText("1.5")).toBeTruthy();
+    expect(screen.getByText("1.9")).toBeTruthy();
     expect(screen.getByText("0.5")).toBeTruthy();
   });
 

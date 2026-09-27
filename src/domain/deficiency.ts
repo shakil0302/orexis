@@ -1,6 +1,6 @@
 import { DEFICIENCY_C, DEFICIENCY_DECAY, DEFICIENCY_X } from "../constants";
 import { addDays, maxDate } from "./dates";
-import { firstPeriodOnOrAfter } from "./periods";
+import { daysInPeriod, firstPeriodOnOrAfter } from "./periods";
 import { ruleInForce, sameRule } from "./rules";
 import type { Dish, ISODate, RuleSnapshot } from "./types";
 
@@ -24,8 +24,15 @@ export interface DishHistory {
 }
 
 /**
- * Deficiency score for one dish as of `today`, computed from every closed period
- * since the dish was created. The current, unfinished period does not count.
+ * Deficiency score for one dish as of `today`, accrued day by day.
+ *
+ * Every past day on which the dish was still outstanding (its period had
+ * started and its repeats were not yet met) adds a slice of X: the full
+ * slice when it was ordered and not done, C times the slice when it was not
+ * ordered. The slice is repeats / days-in-period, so a weekly dish left
+ * untouched all week reaches the same total as a daily dish skipped once,
+ * and the score rises a little with each day of waiting. Each completion
+ * multiplies the score by the decay factor. Today itself never counts.
  */
 export function deficiencyScore(
   dish: Dish,
@@ -34,11 +41,11 @@ export function deficiencyScore(
   today: ISODate,
   params: DeficiencyParams = DEFAULT_PARAMS,
 ): number {
-  if (dish.createdOn > today) return 0;
+  if (dish.createdOn >= today) return 0;
   let score = 0;
   let cursor = dish.createdOn;
 
-  for (;;) {
+  while (cursor < today) {
     let rule = ruleInForce(dish, snapshots, cursor);
     let period = firstPeriodOnOrAfter(rule.cadence, cursor);
     let windowStart = maxDate(period.start, cursor);
@@ -49,20 +56,18 @@ export function deficiencyScore(
       period = firstPeriodOnOrAfter(rule.cadence, windowStart);
       windowStart = maxDate(period.start, windowStart);
     }
-    if (period.end >= today) break;
+    if (windowStart >= today) break;
 
-    let completed = 0;
-    let orderedNotDone = 0;
-    for (let d = windowStart; d <= period.end; d = addDays(d, 1)) {
-      const done = history.completedDays.has(d);
-      if (done) completed++;
-      else if (history.orderedDays.has(d)) orderedNotDone++;
+    const slice = rule.repeats / daysInPeriod(period);
+    let done = 0;
+    for (let d = windowStart; d <= period.end && d < today; d = addDays(d, 1)) {
+      if (history.completedDays.has(d)) {
+        done++;
+        score *= params.decay;
+      } else if (done < rule.repeats) {
+        score += slice * (history.orderedDays.has(d) ? params.x : params.c * params.x);
+      }
     }
-
-    if (completed > 0) score *= params.decay;
-    const shortfall = Math.max(0, rule.repeats - completed);
-    const failed = Math.min(shortfall, orderedNotDone);
-    score += failed * params.x + (shortfall - failed) * params.c * params.x;
 
     cursor = addDays(period.end, 1);
   }

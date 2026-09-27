@@ -43,11 +43,11 @@ Weeks start Monday. Weekly and bi-weekly periods are counted from 1970-01-05, th
 **Deficiency.** A per-dish score computed from history, never stored.
 
 - Constants: X = 1.0, C = 0.5, decay = 0.8. Hard-coded, no settings screen.
-- Evaluated once per closed period, never per day, so cadences are comparable.
-- Shortfall = repeats minus completions in the period.
-- Failed-order days = days in the period where the dish was ordered and not completed.
-- If the period had at least one completion, multiply the score by decay first.
-- Each unit of shortfall adds X while failed-order days remain, then C times X for the rest.
+- Accrues day by day, so the score rises with every day a dish waits. A weekly dish left undone through Thursday is higher on Friday than it was on Thursday.
+- A day counts when it is in the past, the dish's period has started, and its repeats for that period are not yet met. Today never counts.
+- Each such day adds a slice of X: the full slice if the dish was ordered and not done, C times the slice if it was not ordered.
+- The slice is repeats divided by days in the period, so a weekly dish untouched all week reaches the same total as a daily dish skipped once. Cadences stay comparable.
+- Each completion multiplies the score by decay.
 - Ordering and not doing costs more than not ordering, on purpose. Honest skipping is cheaper than false commitment.
 - Recomputed from raw rows on app open and after each completion. No cache.
 
