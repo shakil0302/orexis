@@ -1,0 +1,78 @@
+# Orexis — web migration checklist
+
+Goal: run Orexis as an installable web app on the phone, added to the home screen from Chrome, with no store and no sideloading. The notification track is dropped. Android native stays buildable but is no longer the primary target.
+
+Each phase ends with `npm run verify` green and a commit. Phases 1 and 2 have no visible change and are covered by tests before any web work starts.
+
+## 1. Drop notifications and record the decisions
+
+- [ ] Remove `src/notifications.ts`, the launch hook in `src/app/_layout.tsx`, and the "Notify in 5 s" development button
+- [ ] Uninstall expo-notifications and remove its plugin entry from `app.json`
+- [ ] Remove the notification constants from `src/constants.ts`
+- [ ] SPEC.md: notification section becomes "none; you open the app", platform becomes web first, storage becomes a JSON document
+- [ ] CHECKLIST.md: mark phases 8 and 9 superseded by this file
+- [ ] README: remove the notification and EAS sections for now
+- [ ] Commit
+
+## 2. Replace SQLite with a JSON document store
+
+Keeps the repository synchronous, so screens and the domain layer do not change.
+
+- [ ] `src/db/store.ts`: `DocumentStore` interface with `load(): string | null` and `save(json: string): void`
+- [ ] `src/db/model.ts`: the document shape (categories, dishes, snapshots, orders, orderItems, completions) with a version field
+- [ ] `src/db/repo.ts`: same public methods as today, operating on the in-memory document and calling `save` after every write
+- [ ] Web store over `localStorage`; native store over expo-file-system (check the SDK 57 docs for the synchronous File API before writing it)
+- [ ] `src/db/open.ts`: pick the store by platform, load once, migrate the document version
+- [ ] In-memory store for Jest; port `repo.test.ts` unchanged apart from setup
+- [ ] Delete `schema.ts`, `sql.ts`, `testDb.ts`, and uninstall expo-sqlite and its plugin entry
+- [ ] Screen tests keep passing against the in-memory store
+- [ ] Commit
+
+## 3. Enable the web platform
+
+- [ ] `app.json`: add `"web"` to platforms, set `web.bundler` to metro and `web.output` to single
+- [ ] `npx expo install react-native-web react-dom`
+- [ ] `npm run web` starts and the four screens render in a desktop browser
+- [ ] Replace the Android-only toast with a small cross-platform `Toast` component and use it for "Order's in"
+- [ ] Check on web: Inter loads, the bottom sheet modal opens and closes, hairline dividers show, numeric keyboard on the duration field, safe-area padding is harmless
+- [ ] Date rollover: confirm the foreground check fires on tab visibility change
+- [ ] Commit
+
+## 4. Installable shell
+
+- [ ] `public/manifest.json`: name, short name, start URL, standalone display, background and theme colours, 192 and 512 px icons plus a maskable icon
+- [ ] `src/app/+html.tsx`: link the manifest, set theme colour and viewport, register the service worker
+- [ ] Service worker via Workbox `generateSW` over the exported `dist/`, precaching the app shell so it launches offline
+- [ ] `npm run build:web` script: `expo export -p web` then the Workbox step
+- [ ] Request persistent storage on first launch so the browser does not evict the data
+- [ ] Commit
+
+## 5. Backup and restore
+
+Browser storage can be cleared by the user or the system. This is the only way data survives that.
+
+- [ ] Menu screen: "Back up" row that exports the document as a JSON download, and a "Restore" row that reads a chosen file and replaces the document after confirmation
+- [ ] Round-trip test: export, clear, restore, same scores
+- [ ] Commit
+
+## 6. Hosting
+
+- [ ] Choose a static host with HTTPS (Cloudflare Pages, Netlify, or GitHub Pages all work; no special headers needed)
+- [ ] Deploy `dist/` and confirm the manifest and service worker are served
+- [ ] README: hosting and deploy steps
+- [ ] Commit
+
+## 7. Verification on the phone
+
+- [ ] Open the URL in Chrome, confirm the install prompt, add to home screen
+- [ ] Launch from the icon: full screen, no browser chrome
+- [ ] Add dishes across cadences, place an order, tick items, reopen: data persists
+- [ ] Turn on flight mode, launch from the icon: the app opens
+- [ ] Development panel: seed, Day +1, confirm deficiency and Chef's pick move as expected
+- [ ] Back up, clear site data, restore
+
+## Out of scope for now
+
+- Any morning prompt. Revisit with a scheduled web push sender if wanted later.
+- Sync between devices.
+- Migrating data out of the old SQLite database on Android; it only ever held test data.
