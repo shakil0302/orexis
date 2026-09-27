@@ -47,7 +47,7 @@ export async function ensureDailyNotification(): Promise<boolean> {
 
   await Notifications.cancelAllScheduledNotificationsAsync();
   await Notifications.scheduleNotificationAsync({
-    content: { title: "Orexis", body: "Your menu is ready. Plan today." },
+    content: { title: "Orexis", body: "Kitchen's open. What are you having today?" },
     trigger: {
       type: Notifications.SchedulableTriggerInputTypes.DAILY,
       hour: NOTIFICATION_HOUR,

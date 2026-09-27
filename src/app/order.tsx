@@ -1,6 +1,6 @@
 import { Redirect, router } from "expo-router";
 import { useMemo, useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { Platform, StyleSheet, ToastAndroid, View } from "react-native";
 import { Button, Checkbox, Empty, IconButton, Muted, Row, Screen, SectionHeader, T, Tag } from "../components";
 import { getRepo } from "../db/open";
 import { formatLongDate } from "../domain/format";
@@ -30,6 +30,7 @@ export default function OrderScreen() {
 
   const place = () => {
     getRepo().placeOrder(data.today, chosen.map((s) => s.dish.id), new Date().toISOString());
+    if (Platform.OS === "android") ToastAndroid.show("Order's in", ToastAndroid.SHORT);
     router.replace("/today");
   };
 
@@ -39,7 +40,7 @@ export default function OrderScreen() {
   if (data.dishes.length === 0) {
     body = <Empty title="Add your first dish" body="Your menu is empty." action={{ label: "Add dish", onPress: () => router.push("/dish/new") }} />;
   } else if (data.available.length === 0) {
-    body = <Empty title="Nothing on the menu today" body="Every dish is either done or not due." action={{ label: "Edit menu", onPress: () => router.push("/menu") }} />;
+    body = <Empty title="Kitchen's closed today" body="Every dish is either done or not due." action={{ label: "Edit menu", onPress: () => router.push("/menu") }} />;
   } else {
     body = data.availableGroups.map((g) => (
       <View key={g.category.id}>
@@ -51,7 +52,7 @@ export default function OrderScreen() {
               <Checkbox checked={on} onChange={() => toggle(s.dish.id)} />
               <View style={styles.name}>
                 <T>{s.dish.name}</T>
-                {data.suggested.has(s.dish.id) ? <Tag label="Suggested" /> : null}
+                {data.suggested.has(s.dish.id) ? <Tag label="Chef's pick" /> : null}
               </View>
               {s.repeats > 1 ? <Muted>{`${s.done} of ${s.repeats}`}</Muted> : null}
               <Muted>{formatMinutes(s.dish.durationMin)}</Muted>

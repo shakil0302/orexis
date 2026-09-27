@@ -61,7 +61,7 @@ export default function TodayScreen() {
           <T variant="title">{formatMinutes(remaining)}</T>
         </View>
       </View>
-      {allDone ? <Muted style={{ marginTop: space.md, textAlign: "center" }}>All done</Muted> : null}
+      {allDone ? <Muted style={{ marginTop: space.md, textAlign: "center" }}>{"Kitchen's clean"}</Muted> : null}
     </Screen>
   );
 }

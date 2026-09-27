@@ -51,7 +51,7 @@ Weeks start Monday. Weekly and bi-weekly periods are counted from 1970-01-05, th
 - Ordering and not doing costs more than not ordering, on purpose. Honest skipping is cheaper than false commitment.
 - Recomputed from raw rows on app open and after each completion. No cache.
 
-**Presentation of deficiency.** Never shown as a warning. Dishes sort by score within their category. The top-scoring dish in each category carries a "Suggested" tag on the order screen when its score is above zero. The raw number appears only on the menu editor, in muted grey.
+**Presentation of deficiency.** Never shown as a warning. Dishes sort by score within their category. The top-scoring dish in each category carries a "Chef's pick" tag on the order screen when its score is above zero. The raw number appears only on the menu editor, in muted grey.
 
 **Categories.** Created inline from the dish form via a "New" chip. Deleted automatically when their last dish is removed or moved. Can be renamed and reordered. No caps.
 
@@ -63,7 +63,7 @@ Weeks start Monday. Weekly and bi-weekly periods are counted from 1970-01-05, th
 
 ## 2. Screens and appearance
 
-**Order today.** Available dishes grouped by category, sorted by deficiency. Checkbox, Suggested tag where applicable, duration, progress for repeated dishes. Footer shows item count and total minutes. Primary button "Place order". Edit-menu icon top right.
+**Order today.** Available dishes grouped by category, sorted by deficiency. Checkbox, Chef's pick tag where applicable, duration, progress for repeated dishes. Footer shows item count and total minutes. Primary button "Place order". Edit-menu icon top right.
 
 **Today.** The locked order. Tick to complete. Two summary tiles: done count and remaining minutes. Nothing else. Edit-menu icon top right.
 
@@ -86,7 +86,7 @@ Weeks start Monday. Weekly and bi-weekly periods are counted from 1970-01-05, th
 | Blue background | #E9F3F7 |
 | Red text | #C4554D |
 
-Blue is the only accent: primary button, checked state, Suggested tag. Red is used only for the delete link.
+Blue is the only accent: primary button, checked state, Chef's pick tag. Red is used only for the delete link.
 
 **Type.** Inter, two weights. Title 20 medium, body 16 regular, meta 13 regular with tabular figures, category header 12 medium in gray text, button 16 medium, tag 11 medium. Sentence case everywhere. Durations read "60 min".
 
@@ -96,16 +96,16 @@ Blue is the only accent: primary button, checked state, Suggested tag. Red is us
 
 | Moment | Line |
 |---|---|
-| Notification | Your menu is ready. Plan today. |
+| Notification | Kitchen's open. What are you having today? |
 | Order screen title | Order today |
 | Submit | Place order |
-| After submit | Order placed |
-| Recommendation tag | Suggested |
-| All ticked | All done |
-| Nothing available | Nothing on the menu today |
+| After submit | Order's in (brief toast) |
+| Recommendation tag | Chef's pick |
+| All ticked | Kitchen's clean |
+| Nothing available | Kitchen's closed today |
 | Empty menu | Add your first dish |
 
-No exclamation marks, no first person, no ellipses.
+Restaurant voice in the words, neutral palette on the screen. No exclamation marks, no first person, no ellipses, and never a comment on what was not done.
 
 ## 3. Technical
 

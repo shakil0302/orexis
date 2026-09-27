@@ -58,7 +58,7 @@ describe("OrderScreen", () => {
     // Every dish has closed periods since 14 Sep with nothing ordered, so each category has a top scorer:
     // Mains -> Gym (1.5) over Long run (0.5); Sides -> Read (4.5).
     await render(<OrderScreen />);
-    expect(screen.getAllByText("Suggested")).toHaveLength(2);
+    expect(screen.getAllByText("Chef's pick")).toHaveLength(2);
   });
 
   test("redirects to today once an order exists", async () => {
@@ -90,11 +90,11 @@ describe("TodayScreen", () => {
     expect(screen.getAllByText("25 min")).toHaveLength(2);
 
     await fireEvent.press(screen.getByText("Read"));
-    expect(screen.getByText("All done")).toBeTruthy();
+    expect(screen.getByText("Kitchen's clean")).toBeTruthy();
 
     await fireEvent.press(screen.getByText("Gym")); // untick
     expect(repo.listCompletions(TODAY)).toHaveLength(1);
-    expect(screen.queryByText("All done")).toBeNull();
+    expect(screen.queryByText("Kitchen's clean")).toBeNull();
   });
 });
 
