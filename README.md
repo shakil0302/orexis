@@ -33,6 +33,10 @@ The app opens in the browser on the order screen; the menu is empty until you ad
 | `npm run serve:dist` | Serves `dist/` locally the way a static host would |
 | `npm run icons` | Regenerates `public/icons` from `assets/icon.png` |
 
+## Backup
+
+Browser storage can be cleared by you or evicted by the system, and there is no server, so the menu screen has Back up, which downloads everything as a JSON file, and Restore, which replaces everything with a chosen file after confirmation. Do it now and then.
+
 ## Development panel
 
 In Expo Go and development builds the menu screen ends with a development section that is compiled out of release builds:

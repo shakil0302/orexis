@@ -51,9 +51,9 @@ Keeps the repository synchronous, so screens and the domain layer do not change.
 
 Browser storage can be cleared by the user or the system. This is the only way data survives that.
 
-- [ ] Menu screen: "Back up" row that exports the document as a JSON download, and a "Restore" row that reads a chosen file and replaces the document after confirmation
-- [ ] Round-trip test: export, clear, restore, same scores
-- [ ] Commit
+- [x] Menu screen: "Back up" row that exports the document as a JSON download, and a "Restore" row that reads a chosen file and replaces the document after confirmation
+- [x] Round-trip test: export, clear, restore, same scores
+- [x] Commit
 
 ## 6. Hosting on GitHub Pages
 

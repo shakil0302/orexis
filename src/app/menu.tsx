@@ -2,8 +2,10 @@ import Feather from "@expo/vector-icons/Feather";
 import { router } from "expo-router";
 import { useState } from "react";
 import { Pressable, StyleSheet, View } from "react-native";
-import { BottomSheet, Button, Empty, Field, IconButton, Input, Muted, Row, Screen, SectionHeader, T } from "../components";
+import { downloadBackup, pickBackup } from "../backup";
+import { BottomSheet, Button, Empty, Field, IconButton, Input, Muted, Row, Screen, SectionHeader, showToast, T } from "../components";
 import { getRepo } from "../db/open";
+import { parseDocument } from "../db/model";
 import { seedSampleMenu } from "../dev/seed";
 import { addDays, getTodayOverride, localToday, setTodayOverride } from "../domain/dates";
 import { formatMinutes } from "../domain/ordering";
@@ -17,8 +19,33 @@ export default function MenuScreen() {
   const [menuFor, setMenuFor] = useState<Category | null>(null);
   const [renaming, setRenaming] = useState<Category | null>(null);
   const [newName, setNewName] = useState("");
+  const [pendingRestore, setPendingRestore] = useState<{ json: string; dishes: number; completions: number } | null>(null);
 
   if (!data) return null;
+
+  const backUp = async () => {
+    const ok = await downloadBackup(getRepo().exportJson(), `orexis-${data.today}.json`);
+    showToast(ok ? "Backup saved" : "Backups are available in the web app");
+  };
+
+  const chooseRestore = async () => {
+    const json = await pickBackup();
+    if (json === null) return;
+    try {
+      const doc = parseDocument(json);
+      setPendingRestore({ json, dishes: doc.dishes.length, completions: doc.completions.length });
+    } catch {
+      showToast("That file isn't an Orexis backup");
+    }
+  };
+
+  const confirmRestore = () => {
+    if (!pendingRestore) return;
+    getRepo().importJson(pendingRestore.json);
+    setPendingRestore(null);
+    reload();
+    showToast("Restored");
+  };
 
   const close = () => (router.canGoBack() ? router.back() : router.replace("/"));
   const cats = [...data.categories].sort((a, b) => a.position - b.position);
@@ -83,6 +110,38 @@ export default function MenuScreen() {
         })
       )}
 
+      <View style={styles.backup}>
+        <SectionHeader title="Backup" />
+        <Row onPress={backUp}>
+          <Feather name="download" size={16} color={colors.muted} />
+          <View style={{ flex: 1 }}>
+            <T>Back up</T>
+            <Muted>Saves everything as a file</Muted>
+          </View>
+        </Row>
+        <Row onPress={chooseRestore} last>
+          <Feather name="upload" size={16} color={colors.muted} />
+          <View style={{ flex: 1 }}>
+            <T>Restore</T>
+            <Muted>Replaces everything with a backup file</Muted>
+          </View>
+        </Row>
+      </View>
+
+      <BottomSheet
+        visible={pendingRestore !== null}
+        onClose={() => setPendingRestore(null)}
+        title="Restore this backup?"
+        message={
+          pendingRestore
+            ? `It holds ${pendingRestore.dishes} ${pendingRestore.dishes === 1 ? "dish" : "dishes"} and ${pendingRestore.completions} ${pendingRestore.completions === 1 ? "completion" : "completions"}. Everything currently in the app is replaced.`
+            : undefined
+        }
+      >
+        <Button label="Restore" onPress={confirmRestore} />
+        <Button label="Cancel" variant="secondary" onPress={() => setPendingRestore(null)} style={{ marginTop: space.sm }} />
+      </BottomSheet>
+
       {__DEV__ ? (
         <View style={styles.dev}>
           <SectionHeader title={`Development · today is ${data.today}${getTodayOverride() ? " (overridden)" : ""}`} />
@@ -121,6 +180,7 @@ function SheetAction({ label, onPress }: { label: string; onPress: () => void })
 
 const styles = StyleSheet.create({
   action: { paddingVertical: 14, paddingHorizontal: 4, borderRadius: 6 },
+  backup: { marginTop: space.lg },
   dev: { marginTop: space.xl, paddingTop: space.md, borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: colors.divider },
   devRow: { flexDirection: "row", flexWrap: "wrap", gap: space.sm },
 });
