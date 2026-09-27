@@ -1,4 +1,4 @@
-import { Inter_400Regular, Inter_500Medium, useFonts } from "@expo-google-fonts/inter";
+import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
@@ -9,7 +9,11 @@ import { colors } from "../theme";
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const [loaded, error] = useFonts({ Inter_400Regular, Inter_500Medium });
+  // Only the two weights the theme uses; importing the package index would bundle all eighteen.
+  const [loaded, error] = useFonts({
+    Inter_400Regular: require("@expo-google-fonts/inter/400Regular/Inter_400Regular.ttf"),
+    Inter_500Medium: require("@expo-google-fonts/inter/500Medium/Inter_500Medium.ttf"),
+  });
 
   useEffect(() => {
     if (loaded || error) SplashScreen.hideAsync();

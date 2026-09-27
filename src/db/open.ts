@@ -8,6 +8,8 @@ const NATIVE_FILE = "orexis.json";
 let repo: Repo | null = null;
 
 function webStore(): DocumentStore {
+  // Ask the browser not to evict this origin's data under storage pressure.
+  globalThis.navigator?.storage?.persist?.().catch(() => undefined);
   try {
     const ls = globalThis.localStorage;
     ls.getItem(WEB_KEY);

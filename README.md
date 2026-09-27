@@ -29,6 +29,9 @@ The app opens in the browser on the order screen; the menu is empty until you ad
 | `npm run typecheck` | `tsc --noEmit` |
 | `npm run bundlecheck` | Bundles the Android and web apps once to catch import errors |
 | `npm run verify` | All of the above, in order. Run before committing |
+| `npm run build:web` | Exports the web app to `dist/` with manifest, icons, and a precaching service worker |
+| `npm run serve:dist` | Serves `dist/` locally the way a static host would |
+| `npm run icons` | Regenerates `public/icons` from `assets/icon.png` |
 
 ## Development panel
 
@@ -48,6 +51,8 @@ In Expo Go and development builds the menu screen ends with a development sectio
 | `src/db` | The JSON document model, the repository over it, and the stores: `localStorage` on web, a file on Android, memory in tests |
 | `src/state` | Per-day data loading for screens |
 | `src/dev/seed.ts` | Sample menu |
+| `public/` | Web manifest and icons, copied into the build as-is |
+| `scripts/` | Icon generation, the web build with service worker injection, and the local static server |
 | `src/constants.ts` | Deficiency constants |
 | `src/theme.ts` | Palette, type scale, spacing |
 

@@ -40,12 +40,12 @@ Keeps the repository synchronous, so screens and the domain layer do not change.
 
 ## 4. Installable shell
 
-- [ ] `public/manifest.json`: name, short name, start URL, standalone display, background and theme colours, 192 and 512 px icons plus a maskable icon
-- [ ] `src/app/+html.tsx`: link the manifest, set theme colour and viewport, register the service worker
-- [ ] Service worker via Workbox `generateSW` over the exported `dist/`, precaching the app shell so it launches offline
-- [ ] `npm run build:web` script: `expo export -p web` then the Workbox step
-- [ ] Request persistent storage on first launch so the browser does not evict the data
-- [ ] Commit
+- [x] `public/manifest.json`: name, short name, start URL, standalone display, background and theme colours, 192 and 512 px icons plus a maskable icon
+- [x] `src/app/+html.tsx`: link the manifest, set theme colour and viewport, register the service worker
+- [x] Service worker via Workbox `generateSW` over the exported `dist/`, precaching the app shell so it launches offline
+- [x] `npm run build:web` script: `expo export -p web` then the Workbox step
+- [x] Request persistent storage on first launch so the browser does not evict the data
+- [x] Commit
 
 ## 5. Backup and restore
 
