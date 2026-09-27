@@ -18,15 +18,15 @@ Each phase ends with `npm run verify` green and a commit. Phases 1 and 2 have no
 
 Keeps the repository synchronous, so screens and the domain layer do not change.
 
-- [ ] `src/db/store.ts`: `DocumentStore` interface with `load(): string | null` and `save(json: string): void`
-- [ ] `src/db/model.ts`: the document shape (categories, dishes, snapshots, orders, orderItems, completions) with a version field
-- [ ] `src/db/repo.ts`: same public methods as today, operating on the in-memory document and calling `save` after every write
-- [ ] Web store over `localStorage`; native store over expo-file-system (check the SDK 57 docs for the synchronous File API before writing it)
-- [ ] `src/db/open.ts`: pick the store by platform, load once, migrate the document version
-- [ ] In-memory store for Jest; port `repo.test.ts` unchanged apart from setup
-- [ ] Delete `schema.ts`, `sql.ts`, `testDb.ts`, and uninstall expo-sqlite and its plugin entry
-- [ ] Screen tests keep passing against the in-memory store
-- [ ] Commit
+- [x] `src/db/store.ts`: `DocumentStore` interface with `load(): string | null` and `save(json: string): void`
+- [x] `src/db/model.ts`: the document shape (categories, dishes, snapshots, orders, orderItems, completions) with a version field
+- [x] `src/db/repo.ts`: same public methods as today, operating on the in-memory document and calling `save` after every write
+- [x] Web store over `localStorage`; native store over expo-file-system (check the SDK 57 docs for the synchronous File API before writing it)
+- [x] `src/db/open.ts`: pick the store by platform, load once, migrate the document version
+- [x] In-memory store for Jest; port `repo.test.ts` unchanged apart from setup
+- [x] Delete `schema.ts`, `sql.ts`, `testDb.ts`, and uninstall expo-sqlite and its plugin entry
+- [x] Screen tests keep passing against the in-memory store
+- [x] Commit
 
 ## 3. Enable the web platform
 

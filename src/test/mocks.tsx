@@ -3,7 +3,7 @@
  * getRepo(), and a minimal expo-router. Import this before any screen.
  */
 import { Repo } from "../db/repo";
-import { openTestDb } from "../db/testDb";
+import { MemoryStore } from "../db/store";
 
 const mockState = {
   repo: null as Repo | null,
@@ -19,7 +19,7 @@ const mockState = {
 export const routerMock = mockState.router;
 
 export function resetRepo(): Repo {
-  mockState.repo = new Repo(openTestDb());
+  mockState.repo = new Repo(new MemoryStore());
   return mockState.repo;
 }
 

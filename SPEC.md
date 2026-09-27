@@ -110,55 +110,25 @@ Restaurant voice in the words, neutral palette on the screen. No exclamation mar
 
 **Stack.** Expo with TypeScript, expo-router, expo-font, react-native-web. Web first, installed to the phone's home screen from Chrome and hosted on GitHub Pages; Android native stays buildable. No server, no accounts, no sync. No state library; data reloads from storage on screen focus.
 
-**Architecture.** Three layers with one-way dependency. Screens are thin React Native components. Domain is pure TypeScript with no React or SQLite imports: periods, availability, deficiency, ordering. Storage is a small repository over SQLite.
+**Architecture.** Three layers with one-way dependency. Screens are thin React Native components. Domain is pure TypeScript with no React or storage imports: periods, availability, deficiency, ordering. Storage is a repository over one in-memory JSON document that is written back after every change.
 
-**Schema.**
+**Document.** One JSON object holding everything, versioned so older files can be upgraded on load:
 
-```sql
-CREATE TABLE categories (
-  id        TEXT PRIMARY KEY,
-  name      TEXT NOT NULL,
-  position  INTEGER NOT NULL
-);
-
-CREATE TABLE dishes (
-  id            TEXT PRIMARY KEY,
-  category_id   TEXT NOT NULL REFERENCES categories(id),
-  name          TEXT NOT NULL,
-  duration_min  INTEGER NOT NULL,
-  cadence       TEXT NOT NULL,
-  repeats       INTEGER NOT NULL DEFAULT 1,
-  created_on    TEXT NOT NULL
-);
-
-CREATE TABLE dish_rule_history (
-  dish_id       TEXT NOT NULL REFERENCES dishes(id),
-  period_start  TEXT NOT NULL,
-  cadence       TEXT NOT NULL,
-  repeats       INTEGER NOT NULL,
-  PRIMARY KEY (dish_id, period_start)
-);
-
-CREATE TABLE orders (
-  day        TEXT PRIMARY KEY,
-  placed_at  TEXT NOT NULL
-);
-
-CREATE TABLE order_items (
-  day      TEXT NOT NULL REFERENCES orders(day),
-  dish_id  TEXT NOT NULL REFERENCES dishes(id),
-  PRIMARY KEY (day, dish_id)
-);
-
-CREATE TABLE completions (
-  day      TEXT NOT NULL,
-  dish_id  TEXT NOT NULL REFERENCES dishes(id),
-  done_at  TEXT NOT NULL,
-  PRIMARY KEY (day, dish_id)
-);
+```ts
+interface Document {
+  version: number;
+  categories:  { id, name, position }[];
+  dishes:      { id, categoryId, name, durationMin, cadence, repeats, createdOn, deletedOn }[];
+  snapshots:   { dishId, periodStart, cadence, repeats }[];   // rule in force for a period edited mid-way
+  orders:      { day, placedAt }[];                            // one per planned day
+  orderItems:  { day, dishId }[];
+  completions: { day, dishId, doneAt }[];                      // at most one per dish per day
+}
 ```
 
-Dates are YYYY-MM-DD local. Timestamps are ISO. Everything the UI shows is derived from these tables.
+The repository keeps the document in memory, returns copies from reads, and writes the whole document back after every change. Stores: `localStorage` on web, a file in the app's documents directory on Android, memory in tests. `exportJson` and `importJson` back the backup and restore feature.
+
+Dates are YYYY-MM-DD local. Timestamps are ISO. Everything the UI shows is derived from this document.
 
 **Constants file.** X, C, decay, week start.
 

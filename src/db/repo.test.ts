@@ -1,8 +1,8 @@
 import { availableDishes } from "../domain/availability";
 import { deficiencyScores } from "../domain/deficiency";
+import { DOCUMENT_VERSION, parseDocument } from "./model";
 import { Repo } from "./repo";
-import { SCHEMA_VERSION } from "./schema";
-import { openTestDb } from "./testDb";
+import { MemoryStore } from "./store";
 
 const MON = "2026-09-21";
 const TUE = "2026-09-22";
@@ -10,17 +10,55 @@ const WED = "2026-09-23";
 const NEXT_MON = "2026-09-28";
 
 function setup() {
-  const db = openTestDb();
-  return { db, repo: new Repo(db) };
+  const store = new MemoryStore();
+  return { store, repo: new Repo(store) };
 }
 
-describe("schema", () => {
-  test("migrates to the current version and is idempotent", () => {
-    const { db } = setup();
-    const v = db.getFirstSync<{ user_version: number }>("PRAGMA user_version");
-    expect(v?.user_version).toBe(SCHEMA_VERSION);
-    const tables = db.getAllSync<{ name: string }>("SELECT name FROM sqlite_master WHERE type = 'table' ORDER BY name").map((t) => t.name);
-    expect(tables).toEqual(["categories", "completions", "dish_rule_history", "dishes", "order_items", "orders"]);
+describe("document store", () => {
+  test("starts empty and persists every write as a versioned document", () => {
+    const { store, repo } = setup();
+    expect(store.load()).toBeNull();
+    repo.createDish({ name: "A", newCategoryName: "C", durationMin: 10, cadence: "daily", repeats: 1 }, MON);
+    const doc = parseDocument(store.load()!);
+    expect(doc.version).toBe(DOCUMENT_VERSION);
+    expect(doc.dishes).toHaveLength(1);
+    expect(doc.categories).toHaveLength(1);
+  });
+
+  test("a new repository over the same store sees the same data", () => {
+    const { store, repo } = setup();
+    const a = repo.createDish({ name: "A", newCategoryName: "C", durationMin: 10, cadence: "daily", repeats: 1 }, MON);
+    repo.placeOrder(MON, [a.id], "x");
+    repo.complete(MON, a.id, "y");
+    const again = new Repo(store);
+    expect(again.getDish(a.id)?.name).toBe("A");
+    expect(again.getOrder(MON)).not.toBeNull();
+    expect(again.listCompletions(MON)).toHaveLength(1);
+  });
+
+  test("reads return copies, so mutating them changes nothing", () => {
+    const { repo } = setup();
+    const a = repo.createDish({ name: "A", newCategoryName: "C", durationMin: 10, cadence: "daily", repeats: 1 }, MON);
+    a.name = "hacked";
+    repo.listDishes()[0].name = "hacked";
+    expect(repo.getDish(a.id)?.name).toBe("A");
+  });
+
+  test("export and import round-trip; a bad import changes nothing", () => {
+    const { repo } = setup();
+    const a = repo.createDish({ name: "A", newCategoryName: "C", durationMin: 10, cadence: "daily", repeats: 1 }, MON);
+    const backup = repo.exportJson();
+    repo.deleteDish(a.id, TUE);
+    expect(repo.listDishes()).toHaveLength(0);
+    expect(() => repo.importJson("{\"nope\":true}")).toThrow();
+    expect(() => repo.importJson("garbage")).toThrow();
+    expect(repo.listDishes()).toHaveLength(0);
+    repo.importJson(backup);
+    expect(repo.getDish(a.id)?.name).toBe("A");
+  });
+
+  test("rejects documents from a newer app version", () => {
+    expect(() => new Repo(new MemoryStore(JSON.stringify({ version: DOCUMENT_VERSION + 1 })))).toThrow();
   });
 });
 

@@ -23,7 +23,7 @@ Scan the QR code with Expo Go. The app opens on the order screen; the menu is em
 | Command | What it does |
 |---|---|
 | `npm start` | Metro dev server for Expo Go |
-| `npm test` | Jest: domain, storage, and screen tests |
+| `npm test` | Jest: domain, repository, and screen tests |
 | `npm run lint` | ESLint via `expo lint` |
 | `npm run typecheck` | `tsc --noEmit` |
 | `npm run bundlecheck` | Bundles the Android app once to catch import errors |
@@ -44,7 +44,7 @@ In Expo Go and development builds the menu screen ends with a development sectio
 | `src/screens` | The shared dish form and the screen tests |
 | `src/components` | Themed primitives |
 | `src/domain` | Pure logic: dates, periods, rules, availability, deficiency, ordering, format |
-| `src/db` | SQLite schema, migrations, repository. `testDb.ts` adapts Node's built-in SQLite for Jest only |
+| `src/db` | The JSON document model, the repository over it, and the stores: `localStorage` on web, a file on Android, memory in tests |
 | `src/state` | Per-day data loading for screens |
 | `src/dev/seed.ts` | Sample menu |
 | `src/constants.ts` | Deficiency constants |
