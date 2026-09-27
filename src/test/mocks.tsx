@@ -37,9 +37,12 @@ jest.mock("../db/open", () => ({
 }));
 
 jest.mock("expo-router", () => {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const React = require("react");
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const { Text } = require("react-native");
   return {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useFocusEffect: (cb: () => void | (() => void)) => React.useEffect(cb, []),
     useLocalSearchParams: () => mockState.params,
     router: mockState.router,

@@ -1,5 +1,5 @@
 import { router } from "expo-router";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { BottomSheet, Button, Chip, Field, IconButton, Input, Muted, Screen, Stepper } from "../components";
 import { getRepo } from "../db/open";
@@ -18,42 +18,26 @@ const NEW = "__new__";
 
 export function DishForm({ dishId, initialCategoryId }: Props) {
   const repo = getRepo();
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [existing, setExisting] = useState<Dish | null>(null);
+  // Loaded once, synchronously, when the form mounts.
+  const [categories] = useState<Category[]>(() => repo.listCategories());
+  const [existing] = useState<Dish | null>(() => (dishId ? repo.getDish(dishId) : null));
 
-  const [name, setName] = useState("");
-  const [categoryId, setCategoryId] = useState<string | null>(initialCategoryId ?? null);
+  const [name, setName] = useState(existing?.name ?? "");
+  const [categoryId, setCategoryId] = useState<string | null>(
+    existing?.categoryId ?? initialCategoryId ?? (categories.length === 0 ? NEW : null),
+  );
   const [newCategory, setNewCategory] = useState("");
-  const [duration, setDuration] = useState("");
-  const [cadence, setCadence] = useState<Cadence>("daily");
-  const [repeats, setRepeats] = useState(1);
+  const [duration, setDuration] = useState(existing ? String(existing.durationMin) : "");
+  const [cadence, setCadence] = useState<Cadence>(existing?.cadence ?? "daily");
+  const [repeats, setRepeats] = useState(existing?.repeats ?? 1);
   const [errors, setErrors] = useState<{ name?: string; category?: string; duration?: string }>({});
   const [confirmDelete, setConfirmDelete] = useState(false);
 
-  useEffect(() => {
-    const cats = repo.listCategories();
-    setCategories(cats);
-    if (dishId) {
-      const d = repo.getDish(dishId);
-      if (d) {
-        setExisting(d);
-        setName(d.name);
-        setCategoryId(d.categoryId);
-        setDuration(String(d.durationMin));
-        setCadence(d.cadence);
-        setRepeats(d.repeats);
-      }
-    } else if (cats.length === 0) {
-      setCategoryId(NEW);
-    }
-    // Load once per dish id.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dishId]);
-
   const max = MAX_REPEATS[cadence];
-  useEffect(() => {
-    if (repeats > max) setRepeats(max);
-  }, [max, repeats]);
+  const chooseCadence = (c: Cadence) => {
+    setCadence(c);
+    setRepeats((r) => Math.min(r, MAX_REPEATS[c]));
+  };
 
   const preview = useMemo(() => describeRule(cadence, repeats), [cadence, repeats]);
 
@@ -117,7 +101,7 @@ export function DishForm({ dishId, initialCategoryId }: Props) {
       <Field label="How often">
         <View style={styles.chips}>
           {CADENCES.map((c) => (
-            <Chip key={c} label={CADENCE_LABEL[c]} selected={cadence === c} onPress={() => setCadence(c)} />
+            <Chip key={c} label={CADENCE_LABEL[c]} selected={cadence === c} onPress={() => chooseCadence(c)} />
           ))}
         </View>
       </Field>

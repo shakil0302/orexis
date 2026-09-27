@@ -83,10 +83,6 @@ export default function MenuScreen() {
         })
       )}
 
-      {dishCount > 0 ? (
-        <Button label="Add dish in a new category" variant="secondary" onPress={() => router.push("/dish/new")} style={{ marginTop: space.lg }} />
-      ) : null}
-
       {__DEV__ ? (
         <View style={styles.dev}>
           <SectionHeader title={`Development · today is ${data.today}${getTodayOverride() ? " (overridden)" : ""}`} />

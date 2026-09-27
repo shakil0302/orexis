@@ -1,5 +1,5 @@
 import { Feather } from "@expo/vector-icons";
-import { useEffect, useRef } from "react";
+import { useEffect, useState } from "react";
 import { Animated, Pressable, StyleSheet } from "react-native";
 import { colors } from "../theme";
 
@@ -10,7 +10,7 @@ interface Props {
 }
 
 export function Checkbox({ checked, onChange, size = 22 }: Props) {
-  const scale = useRef(new Animated.Value(checked ? 1 : 0)).current;
+  const [scale] = useState(() => new Animated.Value(checked ? 1 : 0));
   useEffect(() => {
     Animated.spring(scale, { toValue: checked ? 1 : 0, useNativeDriver: true, speed: 30, bounciness: 6 }).start();
   }, [checked, scale]);
