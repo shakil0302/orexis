@@ -5,12 +5,6 @@ import MenuScreen from "../app/menu";
 import OrderScreen from "../app/order";
 import TodayScreen from "../app/today";
 import { DishForm } from "./DishForm";
-import * as backup from "../backup";
-
-jest.mock("../backup", () => ({
-  downloadBackup: jest.fn(async () => true),
-  pickBackup: jest.fn(async () => null),
-}));
 
 const TODAY = "2026-09-23"; // Wednesday
 let repo: ReturnType<typeof resetRepo>;
@@ -105,36 +99,6 @@ describe("TodayScreen", () => {
 });
 
 describe("MenuScreen", () => {
-  test("Back up hands the document to the download helper", async () => {
-    seed();
-    await render(<MenuScreen />);
-    await fireEvent.press(screen.getByText("Back up"));
-    expect(backup.downloadBackup).toHaveBeenCalledWith(repo.exportJson(), `orexis-${TODAY}.json`);
-  });
-
-  test("Restore asks for confirmation, then replaces everything", async () => {
-    const { gym } = seed();
-    const snapshot = repo.exportJson();
-    repo.deleteDish(gym.id, TODAY);
-    jest.mocked(backup.pickBackup).mockResolvedValueOnce(snapshot);
-    await render(<MenuScreen />);
-    await fireEvent.press(screen.getByText("Restore"));
-    expect(await screen.findByText("Restore this backup?")).toBeTruthy();
-    expect(screen.getByText(/holds 3 dishes and 0 completions/)).toBeTruthy();
-    await fireEvent.press(screen.getAllByText("Restore")[1]);
-    expect(repo.getDish(gym.id)?.name).toBe("Gym");
-  });
-
-  test("Restore rejects a file that is not a backup", async () => {
-    seed();
-    jest.mocked(backup.pickBackup).mockResolvedValueOnce("{\"nope\":1}");
-    await render(<MenuScreen />);
-    await fireEvent.press(screen.getByText("Restore"));
-    await new Promise((r) => setTimeout(r, 0));
-    expect(screen.queryByText("Restore this backup?")).toBeNull();
-    expect(repo.listDishes()).toHaveLength(3);
-  });
-
   test("lists categories with dishes, rule summary, and deficiency", async () => {
     seed();
     await render(<MenuScreen />);

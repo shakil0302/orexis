@@ -47,13 +47,11 @@ Keeps the repository synchronous, so screens and the domain layer do not change.
 - [x] Request persistent storage on first launch so the browser does not evict the data
 - [x] Commit
 
-## 5. Backup and restore
+## 5. Backup and restore (deferred)
 
-Browser storage can be cleared by the user or the system. This is the only way data survives that.
+Browser storage can be cleared by the user or the system. Deferred for now; the repository keeps `exportJson` and `importJson` so the menu rows can be added back later.
 
-- [x] Menu screen: "Back up" row that exports the document as a JSON download, and a "Restore" row that reads a chosen file and replaces the document after confirmation
-- [x] Round-trip test: export, clear, restore, same scores
-- [x] Commit
+- [ ] Menu screen: "Back up" row that exports the document as a JSON download, and a "Restore" row that reads a chosen file and replaces the document after confirmation
 
 ## 6. Hosting on GitHub Pages
 
