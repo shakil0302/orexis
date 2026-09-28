@@ -1,6 +1,6 @@
 import type { DishStatus } from "./availability";
-import { canPlaceOrder, formatMinutes, groupByCategory, sortByDeficiency, suggestedDishIds, totalMinutes } from "./ordering";
-import type { Category, Dish } from "./types";
+import { canPlaceOrder, expectedMinutes, formatMinutes, groupByCategory, sortByDeficiency, suggestedDishIds, totalMinutes } from "./ordering";
+import type { Category, Dish, Period } from "./types";
 
 function dish(id: string, categoryId: string, name: string, durationMin = 30): Dish {
   return { id, categoryId, name, durationMin, cadence: "daily", repeats: 1, createdOn: "2026-09-01", deletedOn: null };
@@ -8,6 +8,10 @@ function dish(id: string, categoryId: string, name: string, durationMin = 30): D
 
 function status(d: Dish): DishStatus {
   return { dish: d, period: { start: "2026-09-27", end: "2026-09-27" }, windowStart: "2026-09-27", done: 0, repeats: 1, doneToday: false };
+}
+
+function periodStatus(d: Dish, period: Period, repeats: number, done = 0): DishStatus {
+  return { dish: d, period, windowStart: period.start, done, repeats, doneToday: false };
 }
 
 const cats: Category[] = [
@@ -39,6 +43,29 @@ describe("ordering helpers", () => {
     expect(formatMinutes(60)).toBe("1 h");
     expect(formatMinutes(130)).toBe("2 h 10 min");
     expect(formatMinutes(0)).toBe("0 min");
+  });
+
+  test("expectedMinutes spreads each dish's repeats over the days in its period", () => {
+    const week: Period = { start: "2026-09-21", end: "2026-09-27" };
+    const weekdays: Period = { start: "2026-09-21", end: "2026-09-25" };
+    const weekend: Period = { start: "2026-09-26", end: "2026-09-27" };
+    const september: Period = { start: "2026-09-01", end: "2026-09-30" };
+    // A daily dish is expected in full every day.
+    expect(expectedMinutes([status(c)])).toBe(25);
+    // Weekly x3 of 60 min: 3 x 60 / 7, whatever has been done so far.
+    expect(expectedMinutes([periodStatus(b, week, 3)])).toBe(26);
+    expect(expectedMinutes([periodStatus(b, week, 3, 2)])).toBe(26);
+    // Twice a month for 30 min in a 30-day month: 2 min a day.
+    const budget = dish("f", "sides", "Budget", 30);
+    expect(expectedMinutes([periodStatus(budget, september, 2)])).toBe(2);
+    // The period sets the divisor: 5 min once on weekdays, weekends, or weekly.
+    const five = dish("e", "sides", "Stretch", 5);
+    expect(expectedMinutes([periodStatus(five, weekdays, 1)])).toBe(1); // 5 / 5
+    expect(expectedMinutes([periodStatus(five, weekend, 1)])).toBe(3); // 5 / 2, rounded
+    expect(expectedMinutes([periodStatus(five, week, 1)])).toBe(1); // 5 / 7, rounded
+    // Sums across dishes and rounds once: 25 + 25.71.
+    expect(expectedMinutes([status(c), periodStatus(b, week, 3)])).toBe(51);
+    expect(expectedMinutes([])).toBe(0);
   });
 
   test("sortByDeficiency orders by score then name", () => {

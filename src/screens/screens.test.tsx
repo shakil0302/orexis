@@ -41,6 +41,9 @@ describe("OrderScreen", () => {
     expect(screen.getByText("Read")).toBeTruthy();
     expect(screen.queryByText("Long run")).toBeNull(); // weekends dish on a Wednesday
     expect(screen.getByText("0 items")).toBeTruthy();
+    // Gym, weekly x3: 3 x 60 / 7 = 25.7. Read, daily: 25. Rounded together: 51.
+    expect(screen.getByText("Aim for")).toBeTruthy();
+    expect(screen.getByText("51 min")).toBeTruthy();
 
     await fireEvent.press(screen.getByText("Gym"));
     await fireEvent.press(screen.getByText("Read"));

@@ -4,7 +4,7 @@ import { StyleSheet, View } from "react-native";
 import { Button, Checkbox, Empty, IconButton, Muted, Row, Screen, SectionHeader, showToast, T, Tag } from "../components";
 import { getRepo } from "../db/open";
 import { formatLongDate } from "../domain/format";
-import { formatMinutes } from "../domain/ordering";
+import { expectedMinutes, formatMinutes } from "../domain/ordering";
 import { useAppData } from "../state/useAppData";
 import { space } from "../theme";
 
@@ -18,6 +18,8 @@ export default function OrderScreen() {
 
   if (!data) return null;
   if (data.order) return <Redirect href="/today" />;
+
+  const expected = expectedMinutes(data.available);
 
   const toggle = (id: string) => {
     setSelected((prev) => {
@@ -66,6 +68,10 @@ export default function OrderScreen() {
   const footer =
     data.available.length > 0 ? (
       <View>
+        <View style={styles.totals}>
+          <Muted>Aim for</Muted>
+          <Muted>{formatMinutes(expected)}</Muted>
+        </View>
         <View style={styles.totals}>
           <Muted>{chosen.length === 1 ? "1 item" : `${chosen.length} items`}</Muted>
           <T variant="title">{formatMinutes(total)}</T>

@@ -1,4 +1,5 @@
 import type { DishStatus } from "./availability";
+import { daysInPeriod } from "./periods";
 import type { Category, Dish, ISODate, Order } from "./types";
 
 export function canPlaceOrder(orders: Order[], today: ISODate): boolean {
@@ -7,6 +8,22 @@ export function canPlaceOrder(orders: Order[], today: ISODate): boolean {
 
 export function totalMinutes(dishes: Dish[]): number {
   return dishes.reduce((sum, d) => sum + d.durationMin, 0);
+}
+
+/**
+ * The day's share of the given dishes: each one's repeats × duration spread
+ * evenly over the days in its current period. A 5 min weekly dish adds 5/7
+ * of a minute every day, a twice-monthly 30 min dish adds 2 × 30 / 30 in
+ * September, and a weekdays dish adds its share on weekdays only, since it
+ * has no period on a weekend. Summed and rounded once, this is the steady
+ * daily load to aim for.
+ */
+export function expectedMinutes(statuses: DishStatus[]): number {
+  let total = 0;
+  for (const s of statuses) {
+    total += (s.repeats / daysInPeriod(s.period)) * s.dish.durationMin;
+  }
+  return Math.round(total);
 }
 
 /** "45 min", "1 h", "2 h 10 min". */
