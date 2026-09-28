@@ -55,8 +55,8 @@ describe("OrderScreen", () => {
 
   test("shows the Suggested tag on the top-scoring dish of a category", async () => {
     seed();
-    // Every dish has closed periods since 14 Sep with nothing ordered, so each category has a top scorer:
-    // Mains -> Gym (1.5) over Long run (0.5); Sides -> Read (4.5).
+    // Nothing has been ordered since 14 Sep, so each category has a top scorer among the dishes on offer:
+    // Mains -> Gym (2.1; Long run is off the menu on a Wednesday); Sides -> Read (5.0).
     await render(<OrderScreen />);
     expect(screen.getAllByText("Chef's pick")).toHaveLength(2);
   });
@@ -105,9 +105,9 @@ describe("MenuScreen", () => {
     expect(screen.getByText("3 dishes · 2 categories")).toBeTruthy();
     expect(screen.getByText("3× weekly · 1 h")).toBeTruthy();
     expect(screen.getByText("Daily · 25 min")).toBeTruthy();
-    // Read, daily: 9 past days (14–22 Sep) never ordered = 4.5. Gym, weekly x3: full week 1.5 plus Mon and Tue at 3/7 each = 1.9. Long run: one weekend = 0.5.
-    expect(screen.getByText("4.5")).toBeTruthy();
-    expect(screen.getByText("1.9")).toBeTruthy();
+    // Read, daily: 10 days (14–23 Sep, today included) never ordered = 5.0. Gym, weekly x3: full week 1.5 plus Mon–Wed at 3/14 each = 2.1. Long run: one weekend = 0.5.
+    expect(screen.getByText("5.0")).toBeTruthy();
+    expect(screen.getByText("2.1")).toBeTruthy();
     expect(screen.getByText("0.5")).toBeTruthy();
   });
 

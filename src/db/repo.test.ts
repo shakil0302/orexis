@@ -188,9 +188,9 @@ describe("orders and completions", () => {
     repo.placeOrder(TUE, [a.id], "2026-09-22T07:05:00");
     const h = repo.historyByDish();
     const scores = deficiencyScores(repo.listDishes(), repo.listSnapshots(), h.ordered, h.completed, WED);
-    // A: Mon done (decay of 0), Tue ordered and skipped (+1).
-    expect(scores.get(a.id)).toBeCloseTo(1.0);
-    // B: Mon ordered and skipped (+1), Tue never ordered (+0.5).
-    expect(scores.get(b.id)).toBeCloseTo(1.5);
+    // A: Mon done (decay of 0), Tue ordered and skipped (+1), Wed not ordered yet (+0.5).
+    expect(scores.get(a.id)).toBeCloseTo(1.5);
+    // B: Mon ordered and skipped (+1), Tue never ordered (+0.5), Wed not ordered yet (+0.5).
+    expect(scores.get(b.id)).toBeCloseTo(2.0);
   });
 });
