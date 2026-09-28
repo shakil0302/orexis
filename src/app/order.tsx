@@ -56,7 +56,7 @@ export default function OrderScreen() {
                 <T>{s.dish.name}</T>
                 {data.suggested.has(s.dish.id) ? <Tag label="Chef's pick" /> : null}
               </View>
-              {s.repeats > 1 ? <Muted>{`${s.done} of ${s.repeats}`}</Muted> : null}
+              <Muted>{(data.scores.get(s.dish.id) ?? 0).toFixed(1)}</Muted>
               <Muted>{formatMinutes(s.dish.durationMin)}</Muted>
             </Row>
           );

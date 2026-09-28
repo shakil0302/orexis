@@ -40,6 +40,9 @@ describe("OrderScreen", () => {
     expect(screen.getByText("Gym")).toBeTruthy();
     expect(screen.getByText("Read")).toBeTruthy();
     expect(screen.queryByText("Long run")).toBeNull(); // weekends dish on a Wednesday
+    // Each row carries its deficiency score: Gym 2.1, Read 5.0 (see the MenuScreen test for the sums).
+    expect(screen.getByText("2.1")).toBeTruthy();
+    expect(screen.getByText("5.0")).toBeTruthy();
     expect(screen.getByText("0 items")).toBeTruthy();
     // Gym, weekly x3: 3 x 60 / 7 = 25.7. Read, daily: 25. Rounded together: 51.
     expect(screen.getByText("Aim for")).toBeTruthy();
